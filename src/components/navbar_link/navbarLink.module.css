@@ -1,0 +1,63 @@
+.navLink {
+  border-radius: var(--mantine-radius-xs);
+  transition: all 0.2s ease;
+}
+
+.navLink:hover {
+  background-color: var(--mantine-color-greenAccent-2);
+  transform: translateX(4px);
+  color: var(--mantine-color-dark-1);
+  font-weight: 500;
+}
+
+.navLink[data-active="true"] {
+  background-color: var(--mantine-color-greenAccent-2);
+  border-left: 4px solid var(--mantine-color-greenAccent-6);
+  color: var(--mantine-color-greenAccent-9);
+}
+
+.navLink:hover[data-active="true"] {
+  background-color: var(--mantine-color-greenAccent-2);
+  border-left: 4px solid var(--mantine-color-greenAccent-6);
+  color: var(--mantine-color-greenAccent-9);
+}
+
+.icon {
+  transition: transform 0.2s ease;
+}
+
+.navLink:hover .icon {
+  transform: scale(1.1);
+  color: var(--mantine-color-greenAccent-2);
+  background-color: var(--mantine-color-greenAccent-6);
+}
+
+.navLink[data-active="true"] .icon {
+  color: var(--mantine-color-greenAccent-2);
+  background-color: var(--mantine-color-greenAccent-6);
+}
+
+.navLink:hover[data-active="true"] .icon {
+  color: var(--mantine-color-greenAccent-2);
+  background-color: var(--mantine-color-greenAccent-6);
+}
+
+.label {
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .label {
+    font-size: var(--mantine-font-size-sm);
+  }
+}
+
+@media (max-width: 480px) {
+  .navLink:hover {
+    transform: translateX(2px);
+  }
+
+  .label {
+    font-size: var(--mantine-font-size-xs);
+  }
+}

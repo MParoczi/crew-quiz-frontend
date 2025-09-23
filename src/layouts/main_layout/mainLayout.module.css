@@ -1,0 +1,14 @@
+.navbar {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.navbarMain {
+  flex: 1;
+}
+
+.logo {
+  width: auto !important;
+}

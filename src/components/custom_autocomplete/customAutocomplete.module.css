@@ -1,0 +1,21 @@
+.autocomplete {
+  width: 100%;
+  transition: all 0.2s ease;
+}
+
+.autocomplete:focus-within {
+  transform: translateY(-1px);
+  /* box-shadow: 0 2px 8px rgba(45, 198, 97, 0.2); */
+}
+
+@media (max-width: 768px) {
+  .autocomplete {
+    font-size: var(--mantine-font-size-sm);
+  }
+}
+
+@media (max-width: 480px) {
+  .autocomplete {
+    font-size: var(--mantine-font-size-xs);
+  }
+}

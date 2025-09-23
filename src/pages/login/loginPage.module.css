@@ -1,0 +1,21 @@
+.backgroundImage {
+  background-size: cover;
+  background-position: center;
+}
+
+.textInput {
+  color: white;
+}
+
+.textInput::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.passwordVisibilityToggle {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.loginButton {
+  font-weight: 500;
+  height: 46px;
+}

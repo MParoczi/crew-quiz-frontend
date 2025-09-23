@@ -1,0 +1,41 @@
+.modal {
+  border-radius: var(--mantine-radius-xs);
+}
+
+.questionText {
+  font-size: var(--mantine-font-size-md);
+  line-height: 1.5;
+  text-align: center;
+}
+
+.actions {
+  gap: var(--mantine-spacing-sm);
+  width: 100%;
+}
+
+.cancelButton,
+.confirmButton {
+  min-width: 80px;
+  transition: all 0.2s ease;
+}
+
+.cancelButton:hover,
+.confirmButton:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 480px) {
+  .actions {
+    flex-direction: column;
+  }
+
+  .cancelButton,
+  .confirmButton {
+    width: 100%;
+  }
+
+  .questionText {
+    font-size: var(--mantine-font-size-sm);
+  }
+}

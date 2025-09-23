@@ -1,0 +1,33 @@
+.hoverContainer {
+  width: 100%;
+  max-width: 100%;
+}
+
+.hoverText {
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.hoverText:hover {
+  color: var(--mantine-color-greenAccent-6);
+}
+
+.dropdown {
+  word-wrap: break-word;
+  word-break: break-word;
+  max-width: 280px;
+}
+
+@media (max-width: 768px) {
+  .dropdown {
+    max-width: 240px;
+    font-size: var(--mantine-font-size-sm);
+  }
+}
+
+@media (max-width: 480px) {
+  .dropdown {
+    max-width: 200px;
+    font-size: var(--mantine-font-size-xs);
+  }
+}

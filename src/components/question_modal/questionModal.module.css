@@ -1,0 +1,112 @@
+.modal {
+  border-radius: var(--mantine-radius-xs);
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.header {
+  padding-bottom: var(--mantine-spacing-md);
+  border-bottom: 1px solid var(--mantine-color-gray-2);
+}
+
+.category {
+  color: var(--mantine-color-dimmed);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.points {
+  font-weight: 700;
+  color: var(--mantine-color-greenAccent-6);
+  font-size: var(--mantine-font-size-lg);
+}
+
+.question {
+  padding: var(--mantine-spacing-xl) 0;
+  text-align: center;
+  line-height: 1.4;
+}
+
+.answersContainer {
+  gap: var(--mantine-spacing-sm);
+}
+
+.answerButton {
+  padding: var(--mantine-spacing-md);
+  text-align: left;
+  transition: all 0.2s ease;
+  border-radius: var(--mantine-radius-xs);
+}
+
+.answerButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(45, 198, 97, 0.2);
+}
+
+.answerButton:active {
+  transform: translateY(0);
+}
+
+.actions {
+  padding-top: var(--mantine-spacing-md);
+  border-top: 1px solid var(--mantine-color-gray-2);
+}
+
+.closeButton {
+  transition: all 0.2s ease;
+}
+
+.closeButton:hover {
+  transform: translateY(-1px);
+}
+
+@media (max-width: 768px) {
+  .modal {
+    margin: var(--mantine-spacing-sm);
+    max-height: 95vh;
+  }
+
+  .question {
+    font-size: var(--mantine-font-size-lg);
+    padding: var(--mantine-spacing-md) 0;
+  }
+
+  .points {
+    font-size: var(--mantine-font-size-md);
+  }
+
+  .answerButton {
+    padding: var(--mantine-spacing-sm);
+    font-size: var(--mantine-font-size-sm);
+  }
+}
+
+@media (max-width: 480px) {
+  .modal {
+    margin: var(--mantine-spacing-xs);
+    padding: var(--mantine-spacing-md);
+  }
+
+  .question {
+    font-size: var(--mantine-font-size-md);
+    padding: var(--mantine-spacing-sm) 0;
+  }
+
+  .category {
+    font-size: var(--mantine-font-size-xs);
+  }
+
+  .points {
+    font-size: var(--mantine-font-size-sm);
+  }
+
+  .answerButton {
+    padding: var(--mantine-spacing-xs);
+    font-size: var(--mantine-font-size-xs);
+  }
+
+  .answerButton:hover {
+    transform: translateY(-1px);
+  }
+}

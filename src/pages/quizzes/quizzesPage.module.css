@@ -1,0 +1,16 @@
+.wrapper {
+  min-height: 820px;
+  background-repeat: no-repeat;
+  background-position: top left;
+  position: relative;
+}
+
+.item {
+  border-radius: var(--mantine-radius-xs);
+  box-shadow: var(--mantine-shadow-sm);
+  overflow: hidden;
+}
+
+.icon {
+  margin-left: var(--mantine-spacing-md);
+}

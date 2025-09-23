@@ -1,0 +1,14 @@
+.infoCard_render_card_info {
+  background-color: var(--mantine-color-greenAccent-light);
+  color: var(--mantine-color-greenAccent-light-color);
+}
+
+.infoCard_render_card_warning {
+  background-color: var(--mantine-color-orange-light);
+  color: var(--mantine-color-orange-light-color);
+}
+
+.infoCard_render_card_error {
+  background-color: var(--mantine-color-red-light);
+  color: var(--mantine-color-red-light-color);
+}
