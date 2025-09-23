@@ -44,6 +44,6 @@ export default defineConfig({
     // Minify for production with cache-friendly output
     minify: 'esbuild',
     // Target modern browsers for better optimization
-    target: 'esnext'
+    target: 'es2020'
   }
 });
