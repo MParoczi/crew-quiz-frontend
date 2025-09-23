@@ -19,7 +19,9 @@ function PreviousGamesPage() {
 
   useEffect(() => {
     void getPreviousGamesList();
-  }, [getPreviousGamesList]);
+    // DO NOT add getPreviousGamesList to the dependency array, because it will cause an infinite loop
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   function renderPreviousGames() {
     if (previousGamesList?.length === 0) {
