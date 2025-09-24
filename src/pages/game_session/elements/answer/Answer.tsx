@@ -1,5 +1,5 @@
 import { type BackendModelsDtosCurrentGameDto, type BackendModelsDtosCurrentGameUserDto } from "../../../../api";
-import { useMemo, useState, useCallback, type ChangeEvent } from "react";
+import { useMemo, useState, useCallback, type ChangeEvent, type KeyboardEvent } from "react";
 import useMutateData from "../../../../hooks/useMutateData.ts";
 import { postApiGameFlowRobQuestionMutation, postApiGameFlowSubmitAnswerMutation } from "../../../../api/@tanstack/react-query.gen.ts";
 import { Card, Text, Stack, TextInput, Button, Box } from "@mantine/core";
@@ -180,6 +180,19 @@ function Answer(props: IAnswerProps) {
     setDrawerOpened(false);
   }, []);
 
+  const handleKeyDown = useCallback(
+    (event: KeyboardEvent<HTMLInputElement>) => {
+      if (event.key === "Enter" && !event.shiftKey) {
+        event.preventDefault();
+        if (!answer.trim() || isSubmittedAnswerPending || isRobbedAnswerPending || !!answerError) {
+          return;
+        }
+        void handleSubmitAnswer();
+      }
+    },
+    [answer, answerError, handleSubmitAnswer, isRobbedAnswerPending, isSubmittedAnswerPending],
+  );
+
   function renderAnswerForm(isMobile: boolean = false) {
     return (
       <Card padding="md" radius="xs" withBorder>
@@ -189,6 +202,7 @@ function Answer(props: IAnswerProps) {
             placeholder="Enter your answer here..."
             value={answer}
             onChange={handleAnswerChange}
+            onKeyDown={handleKeyDown}
             variant="filled"
             radius="xs"
             disabled={isSubmittedAnswerPending || isRobbedAnswerPending}
@@ -383,6 +397,7 @@ function Answer(props: IAnswerProps) {
           sessionId={sessionId}
           userId={currentGamePlayer?.user.userId}
           questionId={currentQuestion?.question.questionId}
+          isGameStarted={currentGame.isStarted ?? false}
         />
       </>
     );

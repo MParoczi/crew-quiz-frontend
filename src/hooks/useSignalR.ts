@@ -28,6 +28,7 @@ interface ISignalREventHandler {
 
 interface IUseSignalROptions {
   onConnect?: () => void;
+  onReconnect?: () => void;
   onDisconnect?: () => void;
   onError?: (error: Error) => void;
   autoReconnect?: boolean;
@@ -88,6 +89,7 @@ function useSignalR(hubUrl: string = "/crew-quiz", options?: IUseSignalROptions)
 
       connection.onreconnecting(() => {
         updateState(HubConnectionState.Reconnecting);
+        options?.onReconnect?.();
       });
 
       connection.onreconnected(() => {
