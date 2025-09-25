@@ -89,12 +89,11 @@ function useSignalR(hubUrl: string = "/crew-quiz", options?: IUseSignalROptions)
 
       connection.onreconnecting(() => {
         updateState(HubConnectionState.Reconnecting);
-        options?.onReconnect?.();
       });
 
       connection.onreconnected(() => {
         updateState(HubConnectionState.Connected);
-        options?.onConnect?.();
+        options?.onReconnect?.();
       });
 
       Object.values(GameEventType).forEach((eventType) => {
