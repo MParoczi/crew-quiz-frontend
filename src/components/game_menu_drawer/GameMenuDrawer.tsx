@@ -18,6 +18,7 @@ interface IGameMenuDrawerProps {
   sessionId?: string;
   userId?: bigint | null;
   questionId?: bigint | null;
+  isGameStarted: boolean;
 }
 
 interface IConfirmationAction {
@@ -27,7 +28,7 @@ interface IConfirmationAction {
 }
 
 function GameMenuDrawer(props: IGameMenuDrawerProps) {
-  const { opened, onClose, isGameMaster, sessionId, userId, questionId } = props;
+  const { opened, onClose, isGameMaster, sessionId, userId, questionId, isGameStarted } = props;
 
   const navigate = useNavigate();
   const [confirmationAction, setConfirmationAction] = useState<IConfirmationAction | null>(null);
@@ -135,7 +136,7 @@ function GameMenuDrawer(props: IGameMenuDrawerProps) {
   function renderGameMasterActions() {
     return (
       <>
-        <Button variant="light" radius="xs" size="lg" leftSection={<IconPlayerPlay size={20} />} onClick={handleSelectNextPlayer} disabled={isPending} fullWidth>
+        <Button variant="light" radius="xs" size="lg" leftSection={<IconPlayerPlay size={20} />} onClick={handleSelectNextPlayer} disabled={isPending || !isGameStarted} fullWidth>
           Select Next Player
         </Button>
         <Button variant="light" radius="xs" size="lg" leftSection={<IconBan size={20} />} onClick={handleAllowRobbing} disabled={isPending || !questionId} fullWidth>

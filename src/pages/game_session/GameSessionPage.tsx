@@ -23,7 +23,6 @@ function GameSessionPage() {
   const { sessionId } = useParams<{ sessionId: string }>();
   const navigate = useNavigate();
   const [user] = useUserLocalStorage();
-  const [signalRStatus, signalRMethods] = useSignalR("/crew-quiz", { autoReconnect: true });
   const [isGameCompleted, setIsGameCompleted] = useState<boolean>(false);
 
   const [currentGame, getCurrentGame, isLoadingGame] = useQueryData<BackendModelsDtosCurrentGameDto, GetApiCurrentGameGetCurrentGameBySessionIdBySessionIdData>(
@@ -49,6 +48,16 @@ function GameSessionPage() {
       },
     },
   );
+
+  const handleReconnect = useCallback(() => {
+    if (isGameCompleted) {
+      void getArchivedGame();
+    } else {
+      void getCurrentGame();
+    }
+  }, [getArchivedGame, getCurrentGame, isGameCompleted]);
+
+  const [signalRStatus, signalRMethods] = useSignalR("/crew-quiz", { autoReconnect: true, onReconnect: handleReconnect });
 
   const currentGamePlayer = useMemo(() => {
     if (currentGame?.currentGameUsers?.length === 0) {

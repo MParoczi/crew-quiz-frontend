@@ -1,7 +1,9 @@
 import type { ReactNode } from "react";
+import { Navigate } from "react-router-dom";
 import useReAuthentication from "../../hooks/useReAuthentication";
 import { userAuthenticatedConfig } from "../../storage_configs/authenticationConfigs.ts";
 import { useAtom } from "jotai";
+import { login } from "../../constants/pages";
 
 interface IAuthenticationProtectionProps {
   children: ReactNode;
@@ -18,7 +20,7 @@ function AuthenticationProtection(props: IAuthenticationProtectionProps) {
     if (isUserAuthenticated) {
       return children;
     }
-    return null;
+    return <Navigate to={login} replace />;
   }
 
   return render();

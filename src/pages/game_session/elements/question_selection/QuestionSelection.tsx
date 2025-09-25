@@ -132,6 +132,7 @@ function QuestionSelection(props: IQuestionSelectionProps) {
             <Button
               variant={questionData.isAnswered ? "outline" : "light"}
               color={questionData.isAnswered ? "gray" : "greenAccent"}
+              disabled={questionData.isAnswered}
               size="sm"
               radius="xs"
               style={{
@@ -161,8 +162,11 @@ function QuestionSelection(props: IQuestionSelectionProps) {
 
   function renderMobileLayout(isInteractive: boolean) {
     return (
-      <Stack gap="lg">
+      <Stack gap="sm">
         <Space />
+        <Text size="lg" fw={600} ta="center">
+          Question Groups
+        </Text>
         <List type="ordered" withPadding>
           {processedQuestionGroups.map((group) => (
             <List.Item key={group.groupName}>
@@ -198,6 +202,7 @@ function QuestionSelection(props: IQuestionSelectionProps) {
         key={questionData.questionId?.toString() ?? questionData.pointValue}
         variant={questionData.isAnswered ? "outline" : "light"}
         color={questionData.isAnswered ? "gray" : "greenAccent"}
+        disabled={questionData.isAnswered}
         size="lg"
         fullWidth
         mb="sm"
@@ -222,18 +227,23 @@ function QuestionSelection(props: IQuestionSelectionProps) {
 
   function renderDesktopLayout(isInteractive: boolean) {
     return (
-      <Grid>
-        {processedQuestionGroups.map((group) => (
-          <Grid.Col key={group.groupName} span="auto">
-            <Card padding="md" radius="xs" withBorder>
-              <Text size="lg" fw={700} ta="center" mb="md">
-                {group.groupName}
-              </Text>
-              {renderQuestionGroupQuestionsDesktopLayout(group, isInteractive)}
-            </Card>
-          </Grid.Col>
-        ))}
-      </Grid>
+      <>
+        <Text size="lg" fw={600} ta="center" mb="md">
+          Question Groups
+        </Text>
+        <Grid>
+          {processedQuestionGroups.map((group) => (
+            <Grid.Col key={group.groupName} span="auto">
+              <Card padding="md" radius="xs" withBorder>
+                <Text size="lg" fw={700} ta="center" mb="md">
+                  {group.groupName}
+                </Text>
+                {renderQuestionGroupQuestionsDesktopLayout(group, isInteractive)}
+              </Card>
+            </Grid.Col>
+          ))}
+        </Grid>
+      </>
     );
   }
 
@@ -254,8 +264,14 @@ function QuestionSelection(props: IQuestionSelectionProps) {
         <Box mb="md">
           <CurrentUserPoints currentGamePlayer={currentGamePlayer} />
         </Box>
-        <Box hiddenFrom="sm">{renderMobileLayout(true)}</Box>
-        <Box visibleFrom="sm">{renderDesktopLayout(true)}</Box>
+        <InfoCard text="Your turn to choose a question" />
+        <Space h="lg" />
+        <Card withBorder hiddenFrom="sm">
+          {renderMobileLayout(true)}
+        </Card>
+        <Card withBorder visibleFrom="sm">
+          {renderDesktopLayout(true)}
+        </Card>
       </>
     );
   }
@@ -267,8 +283,13 @@ function QuestionSelection(props: IQuestionSelectionProps) {
           <Leaderboard currentGame={currentGame} />
         </Box>
         <InfoCard text={`Current Player: ${currentUser?.user.username ?? "Unknown"}`} />
-        <Box hiddenFrom="sm">{renderMobileLayout(false)}</Box>
-        <Box visibleFrom="sm">{renderDesktopLayout(false)}</Box>
+        <Space h="lg" />
+        <Card withBorder hiddenFrom="sm">
+          {renderMobileLayout(false)}
+        </Card>
+        <Card withBorder visibleFrom="sm">
+          {renderDesktopLayout(false)}
+        </Card>
       </>
     );
   }
@@ -287,7 +308,14 @@ function QuestionSelection(props: IQuestionSelectionProps) {
           onCancel={handleCancelSelection}
           question={selectedQuestion ? `Do you want to select the ${String(selectedQuestion.pointValue)} point question from ${selectedQuestion.groupName}?` : ""}
         />
-        <GameMenuDrawer opened={drawerOpened} onClose={handleCloseDrawer} isGameMaster={isGameMaster} sessionId={sessionId} userId={currentGamePlayer?.user.userId} />
+        <GameMenuDrawer
+          opened={drawerOpened}
+          onClose={handleCloseDrawer}
+          isGameMaster={isGameMaster}
+          sessionId={sessionId}
+          userId={currentGamePlayer?.user.userId}
+          isGameStarted={currentGame.isStarted ?? false}
+        />
       </>
     );
   }

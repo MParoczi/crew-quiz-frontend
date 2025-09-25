@@ -27,9 +27,7 @@ function Lobby(props: ILobbyProps) {
     return isGameMaster && (currentGame?.currentGameUsers?.length ?? 0) > 0 && !currentGame?.isStarted;
   }, [currentGame?.currentGameUsers?.length, currentGame?.isStarted, isGameMaster]);
 
-  const [, startGame, isStartingGame] = useMutateData(postApiGameFlowStartGameMutation, {
-    successMessage: "Game started successfully!",
-  });
+  const [, startGame, isStartingGame] = useMutateData(postApiGameFlowStartGameMutation);
 
   const handleStartGame = useCallback(async () => {
     if (sessionId) {
@@ -184,7 +182,14 @@ function Lobby(props: ILobbyProps) {
       <>
         {renderLobbyPanels()}
         <FloatingMenuChevron onClick={handleToggleDrawer} opened={drawerOpened} />
-        <GameMenuDrawer opened={drawerOpened} onClose={handleCloseDrawer} isGameMaster={isGameMaster} sessionId={sessionId} userId={currentGamePlayer?.user.userId} />
+        <GameMenuDrawer
+          opened={drawerOpened}
+          onClose={handleCloseDrawer}
+          isGameMaster={isGameMaster}
+          sessionId={sessionId}
+          userId={currentGamePlayer?.user.userId}
+          isGameStarted={currentGame.isStarted ?? false}
+        />
       </>
     );
   }
