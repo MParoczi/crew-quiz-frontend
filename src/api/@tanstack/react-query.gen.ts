@@ -62,7 +62,9 @@ import type {
   PostApiGameFlowStartGameData,
   PostApiGameFlowSelectQuestionData,
   PostApiGameFlowSubmitAnswerData,
+  PostApiGameFlowSubmitAnswerResponse,
   PostApiGameFlowRobQuestionData,
+  PostApiGameFlowRobQuestionResponse,
   PostApiGameFlowLeaveGameData,
   PostApiGameFlowCancelGameData,
   PostApiGameFlowSelectNextPlayerData,
@@ -308,8 +310,8 @@ export const postApiGameFlowSubmitAnswerQueryKey = (options?: Options<PostApiGam
 
 export const postApiGameFlowSubmitAnswerMutation = (
   options?: Partial<Options<PostApiGameFlowSubmitAnswerData>>,
-): UseMutationOptions<unknown, DefaultError, Options<PostApiGameFlowSubmitAnswerData>> => {
-  const mutationOptions: UseMutationOptions<unknown, DefaultError, Options<PostApiGameFlowSubmitAnswerData>> = {
+): UseMutationOptions<PostApiGameFlowSubmitAnswerResponse, DefaultError, Options<PostApiGameFlowSubmitAnswerData>> => {
+  const mutationOptions: UseMutationOptions<PostApiGameFlowSubmitAnswerResponse, DefaultError, Options<PostApiGameFlowSubmitAnswerData>> = {
     mutationFn: async (localOptions) => {
       const { data } = await postApiGameFlowSubmitAnswer({
         ...options,
@@ -326,8 +328,8 @@ export const postApiGameFlowRobQuestionQueryKey = (options?: Options<PostApiGame
 
 export const postApiGameFlowRobQuestionMutation = (
   options?: Partial<Options<PostApiGameFlowRobQuestionData>>,
-): UseMutationOptions<unknown, DefaultError, Options<PostApiGameFlowRobQuestionData>> => {
-  const mutationOptions: UseMutationOptions<unknown, DefaultError, Options<PostApiGameFlowRobQuestionData>> = {
+): UseMutationOptions<PostApiGameFlowRobQuestionResponse, DefaultError, Options<PostApiGameFlowRobQuestionData>> => {
+  const mutationOptions: UseMutationOptions<PostApiGameFlowRobQuestionResponse, DefaultError, Options<PostApiGameFlowRobQuestionData>> = {
     mutationFn: async (localOptions) => {
       const { data } = await postApiGameFlowRobQuestion({
         ...options,

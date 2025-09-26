@@ -6,6 +6,7 @@ import { Card, Text, Stack, TextInput, Button, Box } from "@mantine/core";
 import InfoCard from "../../../../components/info_card/InfoCard.tsx";
 import GameMenuDrawer from "../../../../components/game_menu_drawer/GameMenuDrawer.tsx";
 import FloatingMenuChevron from "../../../../components/floating_menu_chevron/FloatingMenuChevron.tsx";
+import { showErrorNotification } from "../../../../utils/notifications.tsx";
 
 interface IAnswerProps {
   isCurrentUser: boolean;
@@ -79,9 +80,16 @@ function Answer(props: IAnswerProps) {
     return currentQuestion.isRobbingAllowed;
   }, [currentQuestion]);
 
+  const handleWrongAnswer = useCallback(() => {
+    showErrorNotification("Answer submitted", "You got it wrong! Try with another answer!");
+  }, []);
+
   const [, submitAnswer, isSubmittedAnswerPending] = useMutateData(postApiGameFlowSubmitAnswerMutation, {
-    onSuccess: () => {
+    onSuccess: (rightAnswer) => {
       setAnswer("");
+      if (!rightAnswer) {
+        handleWrongAnswer();
+      }
     },
     onError: (error) => {
       if (error.message.includes("network") || error.message.includes("fetch")) {
@@ -95,8 +103,11 @@ function Answer(props: IAnswerProps) {
   });
 
   const [, robAnswer, isRobbedAnswerPending] = useMutateData(postApiGameFlowRobQuestionMutation, {
-    onSuccess: () => {
+    onSuccess: (rightAnswer) => {
       setAnswer("");
+      if (!rightAnswer) {
+        handleWrongAnswer();
+      }
     },
     onError: (error) => {
       if (error.message.includes("network") || error.message.includes("fetch")) {

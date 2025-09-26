@@ -5,6 +5,7 @@ A modern, mobile-first **Jeopardy-style crew quiz game application** built with 
 ## ✨ Features
 
 ### 🎮 Game Experience
+
 - **Real-time Multiplayer**: Live game sessions with SignalR integration
 - **Jeopardy-style Gameplay**: Classic quiz show format with question selection
 - **Role-based Gaming**: Game Master controls vs regular player participation
@@ -13,18 +14,21 @@ A modern, mobile-first **Jeopardy-style crew quiz game application** built with 
 - **Game Session Archive**: Review previous games and results
 
 ### 📝 Content Management
+
 - **Quiz Creation**: Design custom quizzes with multiple question groups
 - **Question Management**: Create, edit, and organize questions by categories
 - **Question Groups**: Organize questions into themed categories
 - **Flexible Content**: Support for various question types and difficulty levels
 
 ### 👥 User Management
+
 - **User Authentication**: Secure login and registration system
 - **User Profiles**: Personal profile management
 - **Game History**: Track previous games and performance
 - **Authentication Protection**: Route-based access control
 
 ### 📱 Technical Features
+
 - **Mobile-First Design**: Optimized for mobile devices with desktop support
 - **Responsive UI**: Seamless experience across all screen sizes
 - **Dark Theme**: Modern dark color scheme by default
@@ -35,27 +39,32 @@ A modern, mobile-first **Jeopardy-style crew quiz game application** built with 
 ## 🚀 Technology Stack
 
 ### Frontend Framework
+
 - **React 19.1.0** - Latest React with modern features
 - **TypeScript** - Type-safe development
 - **Vite** - Lightning-fast build tool and dev server
 
 ### UI & Styling
+
 - **Mantine 8.0.1** - Comprehensive React UI library
 - **Tabler Icons React** - Beautiful icon set
 - **CSS Modules** - Scoped styling approach
 - **PostCSS** - Advanced CSS processing
 
 ### State Management & Data
+
 - **Jotai 2.14.0** - Atomic state management
 - **TanStack Query 5.76.2** - Server state management and caching
 - **React Router DOM 7.6.0** - Client-side routing
 
 ### Real-time & Communication
+
 - **Microsoft SignalR 9.0.6** - Real-time web functionality
 - **OpenAPI Code Generation** - Type-safe API integration
 - **Fetch API Client** - Modern HTTP client
 
 ### Development Tools
+
 - **ESLint** - Code quality and consistency
 - **Prettier** - Code formatting
 - **Yarn** - Package management
@@ -72,18 +81,21 @@ Before running this project, make sure you have:
 ## 🛠️ Installation
 
 1. **Clone the repository**
+
    ```bash
    git clone <repository-url>
    cd crew-quiz-frontend
    ```
 
 2. **Install dependencies**
+
    ```bash
    yarn install
    ```
 
 3. **Configure environment variables**
    Create a `.env` file in the root directory:
+
    ```env
    VITE_API_BASE_URL=http://localhost:5000
    ```
@@ -166,22 +178,26 @@ src/
 The application uses automatically generated TypeScript types and API clients from an OpenAPI specification. The API provides endpoints for:
 
 ### Authentication
+
 - User login and registration
 - Token refresh and validation
 - Session management
 
 ### Game Management
+
 - Create and join game sessions
 - Real-time game state updates
 - Player management and roles
 - Game flow control (start, question selection, answers)
 
 ### Content Management
+
 - Quiz CRUD operations
 - Question and question group management
 - User-specific content filtering
 
 ### User Data
+
 - Profile management
 - Game history tracking
 - Personal statistics
@@ -213,6 +229,7 @@ The application follows a comprehensive design system:
 ## 🤝 Contributing
 
 ### Code Standards
+
 - Follow TypeScript strict mode
 - Use Mantine components exclusively
 - Implement mobile-first responsive design
@@ -221,6 +238,7 @@ The application follows a comprehensive design system:
 - Follow the established component structure pattern
 
 ### Development Guidelines
+
 - All functions passed as props must use `useCallback`
 - Use Jotai for global state management
 - Implement proper error handling and loading states
@@ -228,6 +246,7 @@ The application follows a comprehensive design system:
 - Write self-documenting code without comments
 
 ### Component Pattern
+
 ```typescript
 function ComponentName() {
     function renderSubSection() {
