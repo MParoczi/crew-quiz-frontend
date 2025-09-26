@@ -17,7 +17,9 @@ import type {
   PostApiGameFlowStartGameData,
   PostApiGameFlowSelectQuestionData,
   PostApiGameFlowSubmitAnswerData,
+  PostApiGameFlowSubmitAnswerResponse,
   PostApiGameFlowRobQuestionData,
+  PostApiGameFlowRobQuestionResponse,
   PostApiGameFlowLeaveGameData,
   PostApiGameFlowCancelGameData,
   PostApiGameFlowSelectNextPlayerData,
@@ -266,7 +268,7 @@ export const postApiGameFlowSelectQuestion = <ThrowOnError extends boolean = fal
 };
 
 export const postApiGameFlowSubmitAnswer = <ThrowOnError extends boolean = false>(options?: Options<PostApiGameFlowSubmitAnswerData, ThrowOnError>) => {
-  return (options?.client ?? _heyApiClient).post<unknown, unknown, ThrowOnError>({
+  return (options?.client ?? _heyApiClient).post<PostApiGameFlowSubmitAnswerResponse, unknown, ThrowOnError>({
     security: [
       {
         scheme: "bearer",
@@ -283,7 +285,7 @@ export const postApiGameFlowSubmitAnswer = <ThrowOnError extends boolean = false
 };
 
 export const postApiGameFlowRobQuestion = <ThrowOnError extends boolean = false>(options?: Options<PostApiGameFlowRobQuestionData, ThrowOnError>) => {
-  return (options?.client ?? _heyApiClient).post<unknown, unknown, ThrowOnError>({
+  return (options?.client ?? _heyApiClient).post<PostApiGameFlowRobQuestionResponse, unknown, ThrowOnError>({
     security: [
       {
         scheme: "bearer",

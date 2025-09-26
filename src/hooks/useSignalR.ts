@@ -15,6 +15,7 @@ export enum GameEventType {
   QuestionRobbingIsAllowed = "QuestionRobbingIsAllowed",
   QuestionRobbed = "QuestionRobbed",
   QuestionAnswered = "QuestionAnswered",
+  QuestionAnsweredWrong = "QuestionAnsweredWrong",
   PlayerJoined = "PlayerJoined",
   PlayerLeft = "PlayerLeft",
   PlayerDisconnected = "PlayerDisconnected",
