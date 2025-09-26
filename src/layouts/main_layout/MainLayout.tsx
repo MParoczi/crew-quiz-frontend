@@ -26,8 +26,9 @@ function MainLayout() {
     (index: number, route: string) => {
       setActive(index);
       void navigate(route);
+      toggle();
     },
-    [navigate],
+    [navigate, toggle],
   );
 
   const handleLogoutClick = useCallback(() => {

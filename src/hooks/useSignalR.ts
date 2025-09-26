@@ -15,6 +15,7 @@ export enum GameEventType {
   QuestionRobbingIsAllowed = "QuestionRobbingIsAllowed",
   QuestionRobbed = "QuestionRobbed",
   QuestionAnswered = "QuestionAnswered",
+  QuestionAnsweredWrong = "QuestionAnsweredWrong",
   PlayerJoined = "PlayerJoined",
   PlayerLeft = "PlayerLeft",
   PlayerDisconnected = "PlayerDisconnected",
@@ -28,6 +29,7 @@ interface ISignalREventHandler {
 
 interface IUseSignalROptions {
   onConnect?: () => void;
+  onReconnect?: () => void;
   onDisconnect?: () => void;
   onError?: (error: Error) => void;
   autoReconnect?: boolean;
@@ -92,7 +94,7 @@ function useSignalR(hubUrl: string = "/crew-quiz", options?: IUseSignalROptions)
 
       connection.onreconnected(() => {
         updateState(HubConnectionState.Connected);
-        options?.onConnect?.();
+        options?.onReconnect?.();
       });
 
       Object.values(GameEventType).forEach((eventType) => {

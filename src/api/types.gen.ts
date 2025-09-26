@@ -36,6 +36,7 @@ export type BackendModelsDtosCurrentGameUserDto = {
 
 export type BackendModelsDtosGameFlowDto = {
   userId?: bigint | null;
+  username?: string | null;
   sessionId: string | null;
   questionId?: bigint | null;
   answer?: string | null;
@@ -261,8 +262,10 @@ export type PostApiGameFlowSubmitAnswerResponses = {
   /**
    * OK
    */
-  200: unknown;
+  200: boolean;
 };
+
+export type PostApiGameFlowSubmitAnswerResponse = PostApiGameFlowSubmitAnswerResponses[keyof PostApiGameFlowSubmitAnswerResponses];
 
 export type PostApiGameFlowRobQuestionData = {
   body?: BackendModelsDtosGameFlowDto;
@@ -275,8 +278,10 @@ export type PostApiGameFlowRobQuestionResponses = {
   /**
    * OK
    */
-  200: unknown;
+  200: boolean;
 };
+
+export type PostApiGameFlowRobQuestionResponse = PostApiGameFlowRobQuestionResponses[keyof PostApiGameFlowRobQuestionResponses];
 
 export type PostApiGameFlowLeaveGameData = {
   body?: BackendModelsDtosGameFlowDto;

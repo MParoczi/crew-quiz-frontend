@@ -30,7 +30,6 @@ function HomePage() {
     onSuccess: () => {
       void navigate(`${gameSession}/${sessionId}`);
     },
-    successMessage: "Joined game successfully!",
   });
 
   const navigate = useNavigate();
@@ -45,7 +44,6 @@ function HomePage() {
 
   const [, createGameRequest, isCreatingGame] = useMutateData(postApiCurrentGameCreateCurrentGameMutation, {
     onSuccess: handleCreateGameSuccess,
-    successMessage: "Game created successfully!",
   });
 
   const handleLeaveGameSuccess = useCallback(() => {
@@ -54,7 +52,6 @@ function HomePage() {
 
   const [, leaveGameRequest, isLeavingGame] = useMutateData(postApiGameFlowLeaveGameMutation, {
     onSuccess: handleLeaveGameSuccess,
-    successMessage: "Left game successfully!",
   });
 
   useEffect(() => {

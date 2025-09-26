@@ -1,11 +1,12 @@
 import { type BackendModelsDtosCurrentGameDto, type BackendModelsDtosCurrentGameUserDto } from "../../../../api";
-import { useMemo, useState, useCallback, type ChangeEvent } from "react";
+import { useMemo, useState, useCallback, type ChangeEvent, type KeyboardEvent } from "react";
 import useMutateData from "../../../../hooks/useMutateData.ts";
 import { postApiGameFlowRobQuestionMutation, postApiGameFlowSubmitAnswerMutation } from "../../../../api/@tanstack/react-query.gen.ts";
 import { Card, Text, Stack, TextInput, Button, Box } from "@mantine/core";
 import InfoCard from "../../../../components/info_card/InfoCard.tsx";
 import GameMenuDrawer from "../../../../components/game_menu_drawer/GameMenuDrawer.tsx";
 import FloatingMenuChevron from "../../../../components/floating_menu_chevron/FloatingMenuChevron.tsx";
+import { showErrorNotification } from "../../../../utils/notifications.tsx";
 
 interface IAnswerProps {
   isCurrentUser: boolean;
@@ -79,9 +80,16 @@ function Answer(props: IAnswerProps) {
     return currentQuestion.isRobbingAllowed;
   }, [currentQuestion]);
 
+  const handleWrongAnswer = useCallback(() => {
+    showErrorNotification("Answer submitted", "You got it wrong! Try with another answer!");
+  }, []);
+
   const [, submitAnswer, isSubmittedAnswerPending] = useMutateData(postApiGameFlowSubmitAnswerMutation, {
-    onSuccess: () => {
+    onSuccess: (rightAnswer) => {
       setAnswer("");
+      if (!rightAnswer) {
+        handleWrongAnswer();
+      }
     },
     onError: (error) => {
       if (error.message.includes("network") || error.message.includes("fetch")) {
@@ -95,8 +103,11 @@ function Answer(props: IAnswerProps) {
   });
 
   const [, robAnswer, isRobbedAnswerPending] = useMutateData(postApiGameFlowRobQuestionMutation, {
-    onSuccess: () => {
+    onSuccess: (rightAnswer) => {
       setAnswer("");
+      if (!rightAnswer) {
+        handleWrongAnswer();
+      }
     },
     onError: (error) => {
       if (error.message.includes("network") || error.message.includes("fetch")) {
@@ -180,6 +191,19 @@ function Answer(props: IAnswerProps) {
     setDrawerOpened(false);
   }, []);
 
+  const handleKeyDown = useCallback(
+    (event: KeyboardEvent<HTMLInputElement>) => {
+      if (event.key === "Enter" && !event.shiftKey) {
+        event.preventDefault();
+        if (!answer.trim() || isSubmittedAnswerPending || isRobbedAnswerPending || !!answerError) {
+          return;
+        }
+        void handleSubmitAnswer();
+      }
+    },
+    [answer, answerError, handleSubmitAnswer, isRobbedAnswerPending, isSubmittedAnswerPending],
+  );
+
   function renderAnswerForm(isMobile: boolean = false) {
     return (
       <Card padding="md" radius="xs" withBorder>
@@ -189,6 +213,7 @@ function Answer(props: IAnswerProps) {
             placeholder="Enter your answer here..."
             value={answer}
             onChange={handleAnswerChange}
+            onKeyDown={handleKeyDown}
             variant="filled"
             radius="xs"
             disabled={isSubmittedAnswerPending || isRobbedAnswerPending}
@@ -383,6 +408,7 @@ function Answer(props: IAnswerProps) {
           sessionId={sessionId}
           userId={currentGamePlayer?.user.userId}
           questionId={currentQuestion?.question.questionId}
+          isGameStarted={currentGame.isStarted ?? false}
         />
       </>
     );

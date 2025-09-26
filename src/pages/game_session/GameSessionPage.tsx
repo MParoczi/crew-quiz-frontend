@@ -18,12 +18,12 @@ import useUserLocalStorage from "../../hooks/useUserLocalStorage.ts";
 import QuestionSelection from "./elements/question_selection/QuestionSelection.tsx";
 import Answer from "./elements/answer/Answer.tsx";
 import useSignalR, { GameEventType } from "../../hooks/useSignalR.ts";
+import { showInfoNotification } from "../../utils/notifications.tsx";
 
 function GameSessionPage() {
   const { sessionId } = useParams<{ sessionId: string }>();
   const navigate = useNavigate();
   const [user] = useUserLocalStorage();
-  const [signalRStatus, signalRMethods] = useSignalR("/crew-quiz", { autoReconnect: true });
   const [isGameCompleted, setIsGameCompleted] = useState<boolean>(false);
 
   const [currentGame, getCurrentGame, isLoadingGame] = useQueryData<BackendModelsDtosCurrentGameDto, GetApiCurrentGameGetCurrentGameBySessionIdBySessionIdData>(
@@ -50,6 +50,16 @@ function GameSessionPage() {
     },
   );
 
+  const handleReconnect = useCallback(() => {
+    if (isGameCompleted) {
+      void getArchivedGame();
+    } else {
+      void getCurrentGame();
+    }
+  }, [getArchivedGame, getCurrentGame, isGameCompleted]);
+
+  const [signalRStatus, signalRMethods] = useSignalR("/crew-quiz", { autoReconnect: true, onReconnect: handleReconnect });
+
   const currentGamePlayer = useMemo(() => {
     if (currentGame?.currentGameUsers?.length === 0) {
       return null;
@@ -71,69 +81,95 @@ function GameSessionPage() {
   }, [currentGame?.currentGameQuestions]);
 
   const handlePlayerJoined = useCallback(() => {
-    return signalRMethods.addEventListener(GameEventType.PlayerJoined, () => {
+    return signalRMethods.addEventListener(GameEventType.PlayerJoined, (gameFlowDto) => {
       void getCurrentGame();
+      if (gameFlowDto.username) {
+        showInfoNotification("Game event", `${gameFlowDto.username} has joined!`);
+      }
     });
   }, [getCurrentGame, signalRMethods]);
 
   const handleGameStarted = useCallback(() => {
     return signalRMethods.addEventListener(GameEventType.GameStarted, () => {
       void getCurrentGame();
+      showInfoNotification("Game event", "The game has started!");
     });
   }, [getCurrentGame, signalRMethods]);
 
   const handleQuestionSelected = useCallback(() => {
-    return signalRMethods.addEventListener(GameEventType.QuestionSelected, () => {
+    return signalRMethods.addEventListener(GameEventType.QuestionSelected, (gameFlowDto) => {
       void getCurrentGame();
+      if (gameFlowDto.username) {
+        showInfoNotification("Game event", `${gameFlowDto.username} selected a question!`);
+      }
     });
   }, [getCurrentGame, signalRMethods]);
 
   const handlePlayerLeft = useCallback(() => {
-    return signalRMethods.addEventListener(GameEventType.PlayerLeft, () => {
+    return signalRMethods.addEventListener(GameEventType.PlayerLeft, (gameFlowDto) => {
       void getCurrentGame();
-    });
-  }, [getCurrentGame, signalRMethods]);
-
-  const handleAnswerSubmitted = useCallback(() => {
-    return signalRMethods.addEventListener(GameEventType.AnswerSubmitted, () => {
-      void getCurrentGame();
+      if (gameFlowDto.username) {
+        showInfoNotification("Game event", `${gameFlowDto.username} has left!`);
+      }
     });
   }, [getCurrentGame, signalRMethods]);
 
   const handleQuestionAnswered = useCallback(() => {
-    return signalRMethods.addEventListener(GameEventType.QuestionAnswered, () => {
+    return signalRMethods.addEventListener(GameEventType.QuestionAnswered, (gameFlowDto) => {
       void getCurrentGame();
+      if (gameFlowDto.username && gameFlowDto.answer) {
+        showInfoNotification("Game event", `${gameFlowDto.username} had it right! The correct answer was ${gameFlowDto.answer}`);
+      }
     });
   }, [getCurrentGame, signalRMethods]);
+
+  const handleQuestionAnsweredWrong = useCallback(() => {
+    return signalRMethods.addEventListener(GameEventType.QuestionAnsweredWrong, () => {
+      // if (gameFlowDto.username && gameFlowDto.answer) {
+      //   showInfoNotification("Game event", `${gameFlowDto.username} got it wrong! ${gameFlowDto.answer} is not the correct answer`);
+      // }
+    });
+  }, [signalRMethods]);
 
   const handleGameEnded = useCallback(() => {
     return signalRMethods.addEventListener(GameEventType.GameEnded, () => {
       setIsGameCompleted(true);
       void getArchivedGame();
+      showInfoNotification("Game event", "That was it! That was the last question");
     });
   }, [getArchivedGame, signalRMethods]);
 
   const handleQuestionRobbed = useCallback(() => {
-    return signalRMethods.addEventListener(GameEventType.QuestionRobbed, () => {
+    return signalRMethods.addEventListener(GameEventType.QuestionRobbed, (gameFlowDto) => {
       void getCurrentGame();
+      if (gameFlowDto.username && gameFlowDto.answer) {
+        showInfoNotification("Game event", `${gameFlowDto.username} robbed the question! The correct answer was ${gameFlowDto.answer}`);
+      }
     });
   }, [getCurrentGame, signalRMethods]);
 
   const handleQuestionRobbingIsAllowed = useCallback(() => {
-    return signalRMethods.addEventListener(GameEventType.QuestionRobbingIsAllowed, () => {
+    return signalRMethods.addEventListener(GameEventType.QuestionRobbingIsAllowed, (gameFlowDto) => {
       void getCurrentGame();
+      if (gameFlowDto.username && gameFlowDto.answer) {
+        showInfoNotification("Game event", `${gameFlowDto.username} got it wrong! The question robbing is allowed now!`);
+      }
     });
   }, [getCurrentGame, signalRMethods]);
 
   const handleGameCancelled = useCallback(() => {
     return signalRMethods.addEventListener(GameEventType.GameCancelled, () => {
       void navigate(home);
+      showInfoNotification("Game event", "The game has been cancelled!");
     });
   }, [navigate, signalRMethods]);
 
   const handleNextPlayerSelected = useCallback(() => {
-    return signalRMethods.addEventListener(GameEventType.NextPlayerSelected, () => {
+    return signalRMethods.addEventListener(GameEventType.NextPlayerSelected, (gameFlowDto) => {
       void getCurrentGame();
+      if (gameFlowDto.username) {
+        showInfoNotification("Game event", `${gameFlowDto.username} is the current player now!`);
+      }
     });
   }, [getCurrentGame, signalRMethods]);
 
@@ -160,8 +196,8 @@ function GameSessionPage() {
           const removeGameStarted = handleGameStarted();
           const removeGameEnded = handleGameEnded();
           const removeQuestionSelected = handleQuestionSelected();
-          const removeAnswerSubmitted = handleAnswerSubmitted();
           const removeQuestionAnswered = handleQuestionAnswered();
+          const removeQuestionAnsweredWrong = handleQuestionAnsweredWrong();
           const removeQuestionRobbed = handleQuestionRobbed();
           const removeQuestionRobbingIsAllowed = handleQuestionRobbingIsAllowed();
           const removeGameCancelled = handleGameCancelled();
@@ -174,8 +210,8 @@ function GameSessionPage() {
             removeGameStarted();
             removeGameEnded();
             removeQuestionSelected();
-            removeAnswerSubmitted();
             removeQuestionAnswered();
+            removeQuestionAnsweredWrong();
             removeQuestionRobbed();
             removeQuestionRobbingIsAllowed();
             removeGameCancelled();
@@ -191,7 +227,6 @@ function GameSessionPage() {
             removeGameStarted();
             removeGameEnded();
             removeQuestionSelected();
-            removeAnswerSubmitted();
             removeQuestionAnswered();
             removeQuestionRobbed();
             removeQuestionRobbingIsAllowed();
@@ -210,7 +245,6 @@ function GameSessionPage() {
       cleanup?.();
     };
   }, [
-    handleAnswerSubmitted,
     handleGameCancelled,
     handleGameEnded,
     handleGameStarted,
@@ -218,6 +252,7 @@ function GameSessionPage() {
     handlePlayerJoined,
     handlePlayerLeft,
     handleQuestionAnswered,
+    handleQuestionAnsweredWrong,
     handleQuestionRobbed,
     handleQuestionRobbingIsAllowed,
     handleQuestionSelected,
